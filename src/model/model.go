@@ -19,14 +19,7 @@ type Order struct {
 }
 
 type QueryCondition struct {
-	//查询字段
-	Key string
-	//关键字段
+	Key     string
 	LikeStr string
-	//是否倒序
-	Desc bool
-	//页码
-	Page int
-	//每页的页码
-	pageSize int
+	Desc    bool
 }

@@ -9,11 +9,7 @@ type DbOrder interface {
 	UpdateById(order *model.Order) error
 	Select(condition *model.QueryCondition) ([]*model.Order, error)
 	SelectOrderById(order *model.Order) ([]*model.Order, error)
-}
-
-type ServiceOrder interface {
-	DbOrder
-	Delete() (string, error)
+	//UploadingFile(order *model.Order) (*model.Order, error)
 }
 
 type ServiceMan struct {
@@ -42,9 +38,4 @@ func (s *ServiceMan) Select(condition *model.QueryCondition) ([]*model.Order, er
 
 func (s *ServiceMan) SelectOrderById(order *model.Order) ([]*model.Order, error) {
 	return s.db.SelectOrderById(order)
-}
-
-func (s *ServiceMan) Delete() (string, error) {
-
-	return s.message, nil
 }

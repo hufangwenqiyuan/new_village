@@ -32,12 +32,18 @@ func init() {
 
 }
 
-type sql struct {
+func NewManager(d *gorm.DB) *Sql {
+	return &Sql{
+		db: d,
+	}
+}
+
+type Sql struct {
 	db *gorm.DB
 }
 
 //增
-func (db *sql) Create(order *model.Order) (resultOrder *model.Order, err error) {
+func (db *Sql) Create(order *model.Order) (resultOrder *model.Order, err error) {
 	//判断参数
 	if order == nil {
 		err = fmt.Errorf("order is nil")
@@ -118,7 +124,7 @@ func (db *sql) Create(order *model.Order) (resultOrder *model.Order, err error) 
 
 //改
 
-func (db *sql) updateById(order *model.Order) (err error) {
+func (db *Sql) updateById(order *model.Order) (err error) {
 
 	//判断参数
 	if order == nil {
@@ -147,25 +153,27 @@ func (db *sql) updateById(order *model.Order) (err error) {
 		err = fmt.Errorf("File_url is error,Status %v", order.File_url)
 		return
 	}
-	moorder := &model.Order{}
-	sqls := db.db.Where("order_id=?", order.Order_id).Find(&moorder)
-	if sqls.RecordNotFound() {
-		err = fmt.Errorf("没有找到相关信息，order_id:%v", order.Order_id)
-	}
-	if sqls.Error != nil {
-		err = sqls.Error
+
+	//开启事物
+	th := db.db.Begin()
+
+	defer func() {
+		if er := recover(); er != nil {
+			th.Rollback()
+		}
+	}()
+
+	if err := th.Model(&order).Select("amount", "status", "file_url").Updates(order).Error; err != nil {
+		th.Rollback()
+		return err
 	}
 
-	m := db.db.Model(&order).Where("order_id=?", order.Order_id).Update(order)
-	if m.Error != nil {
-		return m.Error
-	}
 	return nil
 
 }
 
 //根据要求查询数据
-func (db *sql) Select(condition *model.QueryCondition) ([]*model.Order, error) {
+func (db *Sql) Select(condition *model.QueryCondition) ([]*model.Order, error) {
 	if condition == nil {
 		return nil, fmt.Errorf("condition is nil")
 	}
@@ -202,7 +210,7 @@ func (db *sql) Select(condition *model.QueryCondition) ([]*model.Order, error) {
 	return checkOrder, nil
 }
 
-func (db *sql) SelectOrderById(order *model.Order) (*model.Order, error) {
+func (db *Sql) SelectOrderById(order *model.Order) (*model.Order, error) {
 	if order == nil {
 		return nil, fmt.Errorf("order is nil")
 	}
