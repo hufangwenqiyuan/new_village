@@ -201,7 +201,7 @@ func SelectRecord(condition *model.QueryCondition) ([]*model.Order, error) {
 		desc = "DESC"
 	}
 
-	checkOrder := make([]*model.Order, 0)
+	var checkOrder []*model.Order
 	th := &gorm.DB{}
 	if whereFlag {
 		th = mysqldb.Where(whereKey, whereValue).Order("amount " + desc).Order("create_time " + desc).Find(&checkOrder)
