@@ -31,11 +31,11 @@ func init() {
 
 }
 
-func NewSql(d *gorm.DB) *Sql {
-	return &Sql{
-		db: d,
-	}
-}
+//func NewSql(d *gorm.DB) *Sql {
+//	return &Sql{
+//		db: d,
+//	}
+//}
 
 type Sql struct {
 	db *gorm.DB
