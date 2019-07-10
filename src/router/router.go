@@ -14,7 +14,7 @@ func InitRouter() *gin.Engine {
 	//根据id获取数据
 	router.GET("/select", GetDetail)
 	//获取按条件排序的数据
-	router.GET("/getCondition", getCondition)
+	router.GET("/getCondition", GetCondition)
 
 	//上传文件接口
 	router.GET("/uploading", UploadingFile)

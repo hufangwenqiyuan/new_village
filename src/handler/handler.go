@@ -147,7 +147,7 @@ func UploadingFile(c *gin.Context) {
 	router.StaticFS("/file", http.Dir("./public"))
 }
 
-func getCondition(c *gin.Context) {
+func GetCondition(c *gin.Context) {
 	var server service.ServiceMan
 	var req model.QueryCondition
 	if err := c.BindJSON(&req); err != nil {
