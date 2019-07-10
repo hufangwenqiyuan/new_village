@@ -64,7 +64,7 @@ func TestSelect(t *testing.T) {
 	//	log.Fatalf("open the DB fail, err:%s", err)
 	//}
 	ret, erre := ServiceManage().Select(&model.QueryCondition{
-		LikeStr: "1231",
+		LikeStr: "9876",
 		Desc:    true,
 	})
 
