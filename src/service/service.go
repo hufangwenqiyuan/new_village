@@ -89,11 +89,25 @@ func CreateRecord(order *model.Order) (resultOrder *model.Order, err error) {
 		}
 	}()
 
+	//检查主键是否为空
+	b := thran.NewRecord(&order)
+	if b {
+		err = fmt.Errorf("check if value's primary key is blank return false")
+		return
+	}
+
 	//插入数据库
 	d := thran.Create(&order)
 
 	if d.Error != nil {
 		err = d.Error
+		return
+	}
+
+	//return `false` after `user` created
+	b = thran.NewRecord(&order)
+	if b {
+		err = fmt.Errorf("insert is fail")
 		return
 	}
 
@@ -201,7 +215,7 @@ func SelectRecord(condition *model.QueryCondition) ([]*model.Order, error) {
 		desc = "DESC"
 	}
 
-	var checkOrder []*model.Order
+	checkOrder := make([]*model.Order, 0)
 	th := &gorm.DB{}
 	if whereFlag {
 		th = mysqldb.Where(whereKey, whereValue).Order("amount " + desc).Order("create_time " + desc).Find(&checkOrder)
