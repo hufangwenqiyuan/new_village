@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"new_village/src/model"
 )
 
@@ -12,7 +13,7 @@ var Eloquent *gorm.DB
 
 func init() {
 	var err error
-	Eloquent, err = gorm.Open("mysql", "root:root:new_village?charset=utf8&parseTime=True&loc=Local&timeout=10ms")
+	Eloquent, err = gorm.Open("mysql", "root:root@/new_village?charset=utf8&parseTime=True&loc=Local&timeout=10ms")
 	/**
 	判断是否链接正常
 	*/
@@ -24,6 +25,7 @@ func init() {
 		fmt.Printf("database error %v", Eloquent.Error)
 	}
 
+	//自己主动创建
 	database := Eloquent.AutoMigrate(&model.Order{})
 	if database.Error != nil {
 		fmt.Printf("create database error %v", database.Error)

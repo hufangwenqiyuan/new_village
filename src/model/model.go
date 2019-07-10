@@ -11,11 +11,11 @@ type Order struct {
 	//用户名称
 	User_name string `JSON:"user_name"`
 	//总量
-	Amount string `JSON:"amount"`
+	Amount string `JSON:"amount" form:"amount"`
 	//状态
-	Status string `JSON:"status"`
+	Status string `JSON:"status" form:"status"`
 	//文件路径
-	File_url string `JSON:"file_url`
+	File_url string `JSON:"file_url" form:"file_url"`
 }
 
 type QueryCondition struct {

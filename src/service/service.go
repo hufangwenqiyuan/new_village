@@ -89,21 +89,21 @@ func CreateRecord(order *model.Order) (resultOrder *model.Order, err error) {
 		}
 	}()
 
-	//条件注入，判断是否报错
-	if !thran.Where("order_id=?", order.Order_id).RecordNotFound() {
-		//指定需要运行的表，获取db，
-		if er := thran.Table("new_village").Where("order_id=?", order.Order_id).Delete(&model.Order{}).Error; er != nil {
-			err = er
-			return
-		}
-	}
+	////条件注入，判断是否报错
+	//if !thran.Where("order_id=?", order.Order_id).RecordNotFound() {
+	//	//指定需要运行的表，获取db，
+	//	if er := thran.Model("new_village").Where("order_id=?", order.Order_id).Delete(&model.Order{}).Error; er != nil {
+	//		err = er
+	//		return
+	//	}
+	//}
 
 	//检查主键是否为空
-	b := thran.NewRecord(&order)
-	if !b {
-		err = fmt.Errorf("check if value's primary key is blank return false")
-		return
-	}
+	//b := thran.NewRecord(&order)
+	//if !b {
+	//	err = fmt.Errorf("check if value's primary key is blank return false")
+	//	return
+	//}
 
 	//插入数据库
 	d := thran.Create(&order)
@@ -113,12 +113,12 @@ func CreateRecord(order *model.Order) (resultOrder *model.Order, err error) {
 		return
 	}
 
-	//检查主键是否为空
-	b = thran.NewRecord(&order)
-	if !b {
-		err = fmt.Errorf("insert is fail")
-		return
-	}
+	////检查主键是否为空
+	//b = thran.NewRecord(&order)
+	//if !b {
+	//	err = fmt.Errorf("insert is fail")
+	//	return
+	//}
 
 	if order.ID < 1 {
 		err = fmt.Errorf("return id is:%v", order.ID)

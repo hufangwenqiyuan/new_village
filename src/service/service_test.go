@@ -13,8 +13,9 @@ func TestCreate(t *testing.T) {
 	//	log.Fatalf("open the DB fail, err:%s", err)
 	//}
 	id, err := ServiceManage().Create(&model.Order{
+		ID:        12,
 		Order_id:  "9876",
-		Amount:    "23",
+		Amount:    "234",
 		File_url:  "src",
 		User_name: "hufangwen",
 		Status:    "正常",
